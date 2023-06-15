@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
- //Route::get('/', function () {
-    //echo ('Projeto de TCC - UFMG')});
+Route::get('/',[\App\Http\Controllers\SislabController::class,'home']);
+
 
 Route::get('/principal',[\App\Http\Controllers\SislabController::class,'principal']);
