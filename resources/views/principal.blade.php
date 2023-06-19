@@ -23,6 +23,7 @@
     var valorAtualBureta;
     var valorAtualErlenmayer;
     var volumeGasto;
+    var diluicaoAmostra; //thales
 
 
    $(document).on('change','#aliquotaAmostraDiluida',function(){
@@ -48,9 +49,10 @@
     var volumeBalaoVolumetrico = $('#volumeBalaoVolumetrico').val() != 'sem_diluicao' ? $('#volumeBalaoVolumetrico').val() : 1
 
     //calculo para determinar em que momento a concentração da animação deve parar para que o usuário consiga deternimar os valores 
-    var numeroMolAmostraBalao = concentracaoAmostra / (volumeBalaoVolumetrico/volumeAmostra)
-    var numeroMolAliquoaTitulada =  (numeroMolAmostraBalao * aliquotaAmostraDiluida ) / volumeBalaoVolumetrico
-    volumeGasto =   ((numeroMolAliquoaTitulada * 100) / concentracaoTitulante).toFixed(2)
+    var diluicaoAmostra = (volumeBalaoVolumetrico/volumeAmostra)
+    var concentracaoAmostraDiluida = (concentracaoAmostra/diluicaoAmostra)
+    var numeroMolAliquoaTitulada =  (aliquotaAmostraDiluida / concentracaoAmostraDiluida ) / 1000
+    var volumeGasto = ((numeroMolAliquoaTitulada * 1000) / concentracaoTitulante).toFixed(2)
     
 
         pingar(tempoEntreGotas)
@@ -83,7 +85,7 @@
 
 
             console.log({valorAtualBureta,volumeGasto,'soma valores':valorInicialBureta - volumeGasto })
-             if((valorInicialBureta - volumeGasto == valorAtualBureta ) || (valorAtualBureta == 0) ){
+             if((valorInicialBureta - volumeGasto) == valorAtualBureta) || (valorAtualBureta == 0) ){
                 $('#reacaoCompleta').val('Sim')
                 return false                
              }
@@ -99,7 +101,7 @@
 
         //se valor for  = sem_diluicao ocultar aliquotaAmostraDiluida, caso contrário
         if(valorSelecionado == 'sem_diluicao'){
-            enconderItem('aliquotaAmostraDiluida')
+            esconderItem('aliquotaAmostraDiluida')
             $('#valorErlenmayer').html($('#volumeAmostra').val())
             
         }else{
@@ -113,7 +115,7 @@
         
 
        //Função para apagar um label de acordo com o campo ocultado
-       function enconderItem(id){
+       function esconderItem(id){
     $('#' + id + ', label[for=' + id + ']').hide();
     }
 
@@ -123,13 +125,35 @@
     }
 
     //função para verificar se o valor digitado pelo usuário está correto - Thales
-    function verificarValor(){
+    var notificacaoCorreta = "O resultado está correto"
+    var notificacaoIncorreta = "O resultado está incorreto"
+    $(document).on('click','#verificar',function(){
+        if(basic-addon2 == concentracaoAmostra){
+            mostrarItem('notificacao1')
+            esconderItem('notificacao2')
+            $('#notificacao1').html('notificacao1')
+
+        }else{
+            mostrarItem('notificacao2')
+            esconderItem('notificacao1')
+        }
+    }
+    
+    
+    //Thales:
+       /* const btn = document.querySelector("#verificar");
+    btn.addEventLister("click", function(e){
+        e.preventDefault();
+        const name = document.querySelector(#valor);
+        const value = valor.value;
+        });
+    function mostrarItem(verificarValor){
         if(basic-addon2 == concentracaoAmostra){
             mostrarItem(notificacao1)
         }else{
             mostrarItem(notificacao2)
         }
-    }
+    }*/
 
 </script>
 
@@ -200,6 +224,7 @@
                   </select>
             </div>
             </div>
+
 {{--abaixo estou colocando uma aba para o indicador--}}
 
             <div class="col-md-2 text-center">
@@ -225,8 +250,8 @@
                     <div class="col text-center">
                             Volume inicial da bureta: <span>50 mL</span><br>
                             Volume Final da bureta: <span id="valorBureta">50 </span> mL<br>
-                            {{--Valor da Erlenmayer: <span id="valorErlenmayer">000</span><br>
-                            Reação completa: <span id="reacaoCompleta">Não</span>--}}
+                            Valor do Erlenmayer: <span id="valorErlenmayer">000</span><br>
+                            Reação completa: <span id="reacaoCompleta">Não</span>
                     </div>
                  </div>
                  <div class="row h-25 d-flex align-items-center justify-content-center border rounded" style="background-color: RGBA(0,0,0,0.03);">
@@ -284,28 +309,28 @@
                 <div class="row h-75">
                         <div class="col text-center">
                             <div id="notificacao" class="col text-center">
-
-                            <div id="notificacao1" class="alert alert-success col-12" role="alert">
-                                    Seu cálculo está correto.
+                               <div  class="alert alert-success col-12" role="alert">
+                                Correto
                                 </div>
-                                <div id="notificacao2" class="alert alert-danger col-12" role="alert">
-                                    Seu cálculo está incorreto.
-                                </div> 
-                            </div>
+                                    <div class="alert alert-danger col-12" role="alert">
+                                    Incorreto
+                                    </div> 
+                            </div> 
+                            
                             <br>
                             <h4>Concentração da amostra</h4>  
                             <br>
                             <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Digite aqui o resultado encontrado" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <input type="number" class="form-control"  placeholder="Digite aqui o resultado encontrado" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                  <span class="input-group-text" id="basic-addon2">mol/L</span>
+                                  <span class="input-group-text" valor="basic-addon2" id="basic-addon2">mol/L</span>
                                 </div>
                               </div>
-                            <button type="button" class="btn btn-primary btn-block">Validar cálculo</button>
-                            <button type="button" class="btn  btn-block">Reiniciar simulação</button>
+                            <button  id="verificar" class="btn btn-primary btn-block">Verificar Resultado</button>
+                            <a href="/principal" class="btn btn  btn-block">Reiniciar simulação</a>
                             <a href="/" class="btn btn-danger  btn-block">Voltar para o menu</a>
                         </div>
-                </div>
+                    </div>
                 <br>
             </div>
         </div>
