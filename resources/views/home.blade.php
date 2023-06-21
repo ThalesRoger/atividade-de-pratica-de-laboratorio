@@ -24,11 +24,12 @@
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <h2>SisLab</h2>
-                </div>
+                    <img src="{{asset('img/logo.png')}}" width="100" height="100" alt="Logo do experimento" />
+                   {{-- <h2>SisLab</h2> --}}                </div>
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
                     O SisLab foi desenvolvido com a necessidade em criar um projeto pra meu Trabalho de Conclusão de Curso de Química Licenciatura da Universidade Federal de Minas Gerais - UFMG. Concebido como uma plataforma interativa de aprendizagem, o SisLab buscará ser uma ferramenta capaz de possibilitar a interação entre alunos e dispositivos multimídia para atender diferentes necessidades de aprendizagem, com o objetivo de promover a assimilação e absorção dos conteúdos de química em sala de aula. Para essa primeira versão o aluno irá testar seus conhecimentos sobre titulação ácido-base.
-                                     Meu nome é Thales Roger, formando de química licenciatura com formação tecnológica em análise e desenvolvimento de sistemas.
+                                     Meu nome é Thales Roger, formando de química licenciatura com formação tecnológica em análise e desenvolvimento de sistemas. 
+                                     Envie sua sugestão para sislab.sugestao@yahoo.com
                 
                 </div>
                 <a href="/principal" class=" text-gray-900 dark:text-white">
